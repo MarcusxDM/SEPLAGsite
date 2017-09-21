@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
 encoding//rightprice/apps.py=utf-8
+encoding//rightprice/htmlparser.py=utf8
 encoding//rightprice/models.py=utf-8
 encoding//rightprice/views.py=utf-8
