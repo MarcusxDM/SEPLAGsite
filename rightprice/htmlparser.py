@@ -10,6 +10,10 @@ import codecs
 import re
 
 def precoNormalizer(string):
+    '''
+    Recieves a string, deletes all alphanumeric characters and turn it into
+    a float type, then, returning the float object
+    '''
     string = string.replace('R', '').replace('$', ''). replace(' ', ''). replace(',', '.')
     precoFloat = float(string)
     return precoFloat
@@ -32,7 +36,7 @@ htmlSoup = BeautifulSoup(htmlSrc)
 cartao = htmlSoup.find('div', {'class' : "cartao"})
 
 #Descricao
-description = cartao.b.string
+description = str(cartao.b.string)
 
 #Preco Maximo
 precoMax = cartao.find('span', {'style' : 'color: #B71C1C; text-align: right;'})
@@ -45,19 +49,24 @@ precoMinString = precoMin.contents[0].string
 precoMinFloat = precoNormalizer(precoMinString)
 
 #Contribuinte
+
 contribuinte = cartao.find('div', {'class' : 'bloco_contribuinte_endereco'})
 #Nome do Contribuinte
-nomeContribuinte = contribuinte.contents[0].string.replace('\n', '').replace('  ', '').replace('\r', '')
+nomeContribuinte = str(contribuinte.contents[0].string.replace('\n', '').replace('  ', '').replace('\r', ''))
 #Endereco do Contribuente
-enderecoContribuinte = contribuinte.contents[2].string.replace('\n', '').replace('  ', '').replace('\r', '')
+enderecoContribuinte = str(contribuinte.contents[2].string.replace('\n', '').replace('  ', '').replace('\r', ''))
 #Bairro do Contribuinte
-bairroCepContribuinte = contribuinte.contents[4].string.replace('\n', '').replace('  ', '').replace('\r', '')
-bairroContribuinte = charIntSplit(bairroCepContribuinte)
+bairroCepContribuinte = str(contribuinte.contents[4].string.replace('\n', '').replace('  ', '').replace('\r', ''))
+bairroContribuinte = str(charIntSplit(bairroCepContribuinte))
 #CEP do Contribuente
-cepContribuinte = bairroCepContribuinte.replace(bairroContribuinte, '').replace(',', '')
+cepContribuinte = str(bairroCepContribuinte.replace(bairroContribuinte, '').replace(',', ''))
+#Latitude, Longitude e Razao Social
+cordenadas = str(cartao.find('div', {'class' : 'bloco_contribuinte_img'}).a.img['onclick'])
+cordenadas = cordenadas.split('\'')
+latitudeContribuinte = float(cordenadas[1])
+longitudeContribuinte = float(cordenadas[3])
+razaoSocialContribuinte = str(cordenadas[5])
 
-#Longitude e Latitude
-cordenadas = cartao.find('div', {'class' : 'bloco_contribuinte_img'}).a.img['onclick']
 print description
 print precoMaxFloat
 print precoMinFloat
@@ -65,6 +74,8 @@ print nomeContribuinte
 print enderecoContribuinte
 print bairroContribuinte
 print cepContribuinte
-print cordenadas
+print latitudeContribuinte  
+print longitudeContribuinte
+print razaoSocialContribuinte
 
 htmlSrc.close()
