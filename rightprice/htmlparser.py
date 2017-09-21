@@ -8,6 +8,14 @@ Created on 20/09/2017
 from BeautifulSoup import BeautifulSoup
 import codecs
 import re
+import os
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'SEPLAGsite.settings'
+
+import django
+django.setup()
+
+from rightprice.models import Product
 
 def precoNormalizer(string):
     '''
@@ -30,17 +38,21 @@ def charIntSplit(string):
             stringFinal = stringFinal+' '+string[i+1]
             i = i+1
     return stringFinal
-    
+
+
 htmlSrc = codecs.open("htmlsource/cerveja.html", 'r', encoding='utf-8')
 #print htmlSrc.read()
 htmlSoup = BeautifulSoup(htmlSrc)
 #print htmlSoup.prettify()
 
+#Django preparing object
+produto = Product()
+
 #Encontrar comeco de Produto
 cartao = htmlSoup.find('div', {'class' : "cartao"})
 
 #Descricao
-description = str(cartao.b.string)
+descricao = str(cartao.b.string)
 
 #Preco Maximo
 precoMax = cartao.find('span', {'style' : 'color: #B71C1C; text-align: right;'})
@@ -71,7 +83,7 @@ latitudeContribuinte = float(cordenadas[1])
 longitudeContribuinte = float(cordenadas[3])
 razaoSocialContribuinte = str(cordenadas[5])
 
-print description
+print descricao
 print precoMaxFloat
 print precoMinFloat
 print nomeContribuinte
@@ -81,5 +93,19 @@ print cepContribuinte
 print latitudeContribuinte  
 print longitudeContribuinte
 print razaoSocialContribuinte
+
+#
+produto.description     = descricao
+produto.SellPriceMax    = precoMaxFloat
+produto.SellPriceMin    = precoMinFloat
+produto.fantasiaName    = nomeContribuinte
+produto.addressName     = enderecoContribuinte
+produto.neighborhood    = bairroContribuinte
+produto.cepNum          = cepContribuinte
+produto.latitudeNum     = latitudeContribuinte
+produto.longitudeNum    = longitudeContribuinte
+produto.razaoSocialName = razaoSocialContribuinte
+produto.cityName        = "MACEIÓ"
+produto.save()
 
 htmlSrc.close()
