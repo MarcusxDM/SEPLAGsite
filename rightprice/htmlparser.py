@@ -19,6 +19,10 @@ def precoNormalizer(string):
     return precoFloat
 
 def charIntSplit(string):
+    '''
+    Recieves a string(Neighborhood+CEP) and splits it, removing the CEP
+    and then returns only the Neighborhood string
+    '''
     i = 0
     string = re.findall(r"[^\W\d_]+|\d+", string)
     stringFinal = string[0]
