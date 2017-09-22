@@ -9,15 +9,15 @@ class Product(models.Model):
     def __str__(self):
         return self.description
     
-    productCode = models.CharField(max_length=200)
+    productCode = models.CharField(max_length=200, null=True)
     description = models.CharField(max_length=200)
     SellPriceMax = models.DecimalField(max_digits=200, decimal_places=2, null=True, blank=True)
     SellPriceMin = models.DecimalField(max_digits=200, decimal_places=2, null=True, blank=True)
-    razaoSocialName = models.CharField(max_length=200)
+    razaoSocialName = models.CharField(max_length=200, null=True)
     fantasiaName = models.CharField(max_length=200)
     addressName = models.CharField(max_length=200)
     neighborhood = models.CharField(max_length=200)
     cepNum = models.CharField(max_length=200)
     cityName = models.CharField(max_length=200)
-    latitudeNum = models.DecimalField(max_digits=200, decimal_places=7, null=True, blank=True)
-    longitudeNum = models.DecimalField(max_digits=200, decimal_places=7, null=True, blank=True)
+    latitudeNum = models.DecimalField(max_digits=200, decimal_places=8, null=True, blank=True)
+    longitudeNum = models.DecimalField(max_digits=200, decimal_places=8, null=True, blank=True)
