@@ -132,7 +132,13 @@ def extractProduct(cartao):
     
 if __name__ == '__main__':
     #Opening HTML and turning it into BeautifulSoup object
-    htmlSourceList = ['htmlsource/camisa2.html']
+    htmlSourceList = ['htmlsource/chocolate2.html',
+                      'htmlsource/cerveja.html'
+                      'htmlsource/suco.html'
+                      'htmlsource/camisa2.html'
+                      'htmlsource/sabonete.html'
+                      'htmlsource/chocolate.html',
+                      'htmlsource/macarrao.html']
     
     for htmlDir in htmlSourceList:
         htmlSrc = codecs.open(htmlDir, 'r', encoding='utf-8')
