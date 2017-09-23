@@ -74,6 +74,7 @@ def extractProduct(cartao):
     contribuinte = cartao.find('div', {'class' : 'bloco_contribuinte_endereco'})
     #Nome do Contribuinte
     nomeContribuinte = contribuinte.contents[0].string.replace('\n', '').replace('  ', '').replace('\r', '')
+    
     #Endereco do Contribuente
     enderecoContribuinte = contribuinte.contents[2].string.replace('\n', '').replace('  ', ' ').replace('\r', '').replace('   ','')
     if enderecoContribuinte[0] == ' ':
@@ -131,10 +132,7 @@ def extractProduct(cartao):
     
 if __name__ == '__main__':
     #Opening HTML and turning it into BeautifulSoup object
-    htmlSourceList = ['htmlsource/cerveja.html',
-                      'htmlsource/sabonete.html', 
-                      'htmlsource/macarrao.html',
-                      'htmlsource/biscoito.html']
+    htmlSourceList = ['htmlsource/camisa2.html']
     
     for htmlDir in htmlSourceList:
         htmlSrc = codecs.open(htmlDir, 'r', encoding='utf-8')
@@ -142,7 +140,8 @@ if __name__ == '__main__':
     
         #Finding product blocks in the HTML
         cartaoList = htmlSoup.findAll('div', {'class' : "cartao"})
-        
+        print 'Produtos encontrados: '
+        print len(cartaoList)
         for cartao in cartaoList:
             extractProduct(cartao)
         
