@@ -129,7 +129,7 @@ def extractProduct(cartao):
     produto.cityName        = "MACEIÓ"
     produto.save()
     print "\n"
-    
+
 if __name__ == '__main__':
     #Opening HTML and turning it into BeautifulSoup object
     htmlSourceList = ['htmlsource/chocolate2.html',

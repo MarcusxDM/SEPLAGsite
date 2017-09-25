@@ -6,8 +6,9 @@
     <meta charset="utf-8">
     {% load staticfiles %}
     <link rel="stylesheet" href="{% static 'rightprice/rightpricestyle.css' %}">
-  	<style>
- 		img {
+    
+    <style>
+      img {
     	display: block;
     	max-width: 70%;
   		height: auto;
@@ -19,29 +20,19 @@
     <img src="{% static 'rightprice/rightprice.png' %}" alt="logo" height=90, widght=10/>
   <hr>
   </head>
-  
   <body>
-	<form method='GET', action='search/'>
-		<label for="description">Pesquisa por descrição: </label>
-	    <input id="description" type="text" name="description" value="{{ description }}">
-	    <input type="submit" value="OK">
-	</form>
-	
-  	<div id=table>
+  <div id=table>
 	  <div id="products">
-	  {% if product_list %}
-	    <ul>
-	    {% for product in product_list %}
-	        <li><a href="/rightprice/{{ product.productCode }}/">{{ product.description }}</a></li>
-	    {% endfor %}
-	    </ul>
-	{% else %}
-	    <p>No products are available.</p>
-	{% endif %}
-  </div>
+		{% if results %}
+		  {% for product in results %}
+		    <h3>{{ product.description }}</h3>
+		  {% endfor %}
+		{% else %}
+		  <p>Desculpe, não foi encontrado nenhum produto com esta descrição</p>
+		{% endif %}
+	  </div>
 	    <div id="map"></div>
-	 </div>
-
+  </div>
     <script>
       var map;
       function initMap() {
