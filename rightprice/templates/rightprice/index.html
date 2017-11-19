@@ -16,23 +16,64 @@
     }
     </style>
     {% load staticfiles %}
-    <img src="{% static 'rightprice/rightprice.png' %}" alt="logo" height=90, widght=10/>
+    <a href="/rightprice"><img src="{% static 'rightprice/rightprice.png' %}" alt="logo" height=90, widght=10/></a>
   <hr>
   </head>
   
   <body>
 	<form method='GET', action='search/'>
-		<label for="description">Pesquisa por descrição: </label>
-	    <input id="description" type="text" name="description" value="{{ description }}">
-	    <input type="submit" value="OK">
+		<label for="description">descrição: </label>
+		<input id="description" type="text" name="description" value="{{ description }}">
+		<label for="fantasiaName"> estabelecimento: </label>
+		<input id="fantasiaName" type="text" name="fantasiaName" value="{{ fantasiaName }}">
+		<label for="neighborhood">Bairro: </label>
+		<select name="neighborhood">
+			<option value="all">Todos</option>
+		    <option value="ponta verde">Ponta Verde</option>
+		    <option value="garca torta">Garça Torta</option>
+		    <option value="poco">Poço</option>
+		    <option value="martins">Tabuleiro dos Martins</option>
+		    <option value="ponta da terra">Ponta da Terra</option>
+		    <option value="pitanguinha">Pitanguinha</option>
+		    <option value="pontal da barra">Pontal da Barra</option>
+		    <option value="cruz das almas">Cruz das Almas</option>
+		    <option value="paju">Pajuçara</option>
+		    <option value="ouro preto">Ouro Preto</option>
+		    <option value="jaragua">Jaraguá</option>
+		    <option value="prado">Prado</option>
+		    <option value="jacintinho">Jacintinho</option>
+		    <option value="bom parto">Bom Parto</option>
+		    <option value="feitosa">Feitosa</option>
+		    <option value="ipioca">Ipioca</option>
+		    <option value="mangabeira">Mangabeiras</option>
+		    <option value="santa lucia">Santa Lúcia</option>
+		    <option value="antares">Antares</option>
+		    <option value="cidade universitaria">Cidade Universitária</option>
+		    <option value="jaqueira">Chã de Jaqueira</option>
+		    <option value="benedito bentes">Benedito Bentes</option>
+		    <option value="farol">Farol</option>
+		    <option value="ponta grossa">Ponta Grossa</option>
+		    <option value="jatiuca">Jatiúca</option>
+		    <option value="levada">Levada</option>
+		    <option value="serraria">Serraria</option>
+		    <option value="gruta de lourdes">Gruta de Lourdes</option>
+		    <option value="vergel do lago">Vergel do Lago</option>
+		    <option value="trapiche da barra">Trapiche da Barra</option>
+		    <option value="santa amelia">Santa Amélia</option>
+		    <option value="sao jorge">São Jorge</option>
+		    <option value="santos dumont">Santos Dumont</option>
+		    <option value="petropolis">Petropolis</option>
+		</select>
+	    
+	    <input type="submit" value="PESQUISAR">
 	</form>
 	
   	<div id=table>
-	  <div id="products">
-	  {% if product_list %}
+	  <div class="products">
+	  {% if store_list %}
 	    <ul>
-	    {% for product in product_list %}
-	        <li><a href="/rightprice/{{ product.productCode }}/">{{ product.description }}</a></li>
+	    {% for store in store_list %}
+	        <h2><a id="prodList" href="/rightprice/search/?description=&fantasiaName={{store.fantasiaName}}&neighborhood=all">{{ store.fantasiaName }}</a></h2>
 	    {% endfor %}
 	    </ul>
 	{% else %}
@@ -49,6 +90,34 @@
           center: {lat: -9.6545916, lng: -35.715989},
           zoom: 13
         });
+        
+        {% load rightprice_extras %}
+        {% if store_list %}
+        var productList = []
+    	{% for productt in store_list %}
+       		productList.push({
+            	fantasiaName: '{{productt.fantasiaName}}',
+            	latitudeNum:  {{productt.latitudeNum}},
+            	longitudeNum: {{productt.longitudeNum}},
+            	addressName:  '{{productt.addressName}}',
+            	neighborhood:  '{{productt.neighborhood}}',
+            	cepNum:       '{{productt.cepNum}}' 
+       		 })
+    		{% endfor %}
+			
+        	var product
+        	for (i = 0; i<20; i++){
+	        var infowindow = new google.maps.InfoWindow({
+	        	content: productList[i].fantasiaName+'<br><br>'+productList[i].addressName+'<br>'
+	        	+productList[i].neighborhood,
+	            position: {lat: productList[i].latitudeNum, lng: productList[i].longitudeNum}
+	          });
+	        infowindow.open(map);
+        	}
+	         
+        	
+	   	{% endif %}
+              
       }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApMGZ2UbGB5OjHub7QCffJEjmI2jHIb0Y&callback=initMap"

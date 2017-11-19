@@ -17,15 +17,18 @@
     }
     </style>
     {% load staticfiles %}
-    <img src="{% static 'rightprice/rightprice.png' %}" alt="logo" height=90, widght=10/>
+    <a href="/rightprice"><img src="{% static 'rightprice/rightprice.png' %}" alt="logo" height=90, widght=10/></a>
   <hr>
   </head>
   <body>
+	 <form action="/rightprice">
+	    <input type="submit" value="Voltar" />
+	</form>
   <div id=table>
-	  <div id="products">
+	  <div class="products">
 		{% if results %}
 		  {% for product in results %}
-		    <h3>{{ product.description }}</h3>
+		   <h2><a id="prodList" href="/rightprice/{{ product.id }}/">{{ product.description }} <br>Preço Máximo: R$ {{ product.SellPriceMax }}</a></h2>
 		  {% endfor %}
 		{% else %}
 		  <p>Desculpe, não foi encontrado nenhum produto com esta descrição</p>
@@ -40,6 +43,39 @@
           center: {lat: -9.6545916, lng: -35.715989},
           zoom: 13
         });
+        
+        {% if results %}
+        var productList = []
+		{% for productt in results %}
+   		productList.push({
+        	fantasiaName: '{{productt.fantasiaName}}',
+        	latitudeNum:  {{productt.latitudeNum}},
+        	longitudeNum: {{productt.longitudeNum}},
+        	addressName:  '{{productt.addressName}}',
+        	neighborhood: '{{productt.neighborhood}}',
+        	cepNum:       '{{productt.cepNum}}' 
+   		 })
+		{% endfor %}
+		
+    	var product
+    	for (i = 0; i<20; i++){
+    		if (productList[i].fantasiaName != productList[i+1].fantasiaName){
+		        var infowindow = new google.maps.InfoWindow({
+		        	content: productList[i].fantasiaName+'<br><br>'+productList[i].addressName+'<br>'
+		        	+productList[i].neighborhood+'<br>'+productList[i].cepNum,
+		            position: {lat: productList[i].latitudeNum, lng: productList[i].longitudeNum}
+		          });
+		        infowindow.open(map);
+		     } else {
+		    	 var infowindow = new google.maps.InfoWindow({
+			         content: productList[0].fantasiaName+'<br><br>'+productList[0].addressName+'<br>'
+			         +productList[0].neighborhood+'<br>'+productList[0].cepNum,
+			          position: {lat: productList[0].latitudeNum, lng: productList[0].longitudeNum}
+			     });
+			    infowindow.open(map);
+		     }
+		    	}
+   		{% endif %}
       }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApMGZ2UbGB5OjHub7QCffJEjmI2jHIb0Y&callback=initMap"

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RIGHT PRICE</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'rightprice/rightpricestyle.css' %}">
+    
+    <style>
+      img {
+    	display: block;
+    	max-width: 70%;
+  		height: auto;
+    	margin-left: auto;
+    	margin-right: auto;
+    }
+    </style>
+    {% load staticfiles %}
+    <a href="/rightprice"><img src="{% static 'rightprice/rightprice.png' %}" alt="logo" height=90, widght=10/></a>
+  <hr>
+  </head>
+  <body>
+  	<form action="/rightprice">
+	    <input type="submit" value="Home" />
+	</form>
+  <div id=table>
+	  <div class="products", id="detail">
+		{% if product %}
+		  <h2>{{ product.description }}</h2>
+		  <h3 id="maximo">Preço Máximo: R$ {{ product.SellPriceMax }}</h3>
+		  <h3 id="minimo">Preço Mínimo: R$ {{ product.SellPriceMax }}</h3>
+		  <br>
+		  <h4>{{ product.fantasiaName }}</h4>
+		  <h5>{{ product.addressName }}</h5>
+		  <h5>{{ product.neighborhood }}, {{ product.cepNum }}</h5>
+		{% else %}
+		  <p>Desculpe, não foi encontrado nenhum produto</p>
+		{% endif %}
+	  </div>
+	    <div id="map"></div>
+  </div>
+    <script>
+      var map;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: -9.6545916, lng: -35.715989},
+          zoom: 13
+        });
+        
+        
+        {% if product %}
+        	
+	        var infowindow = new google.maps.InfoWindow({
+	        	content: '{{product.fantasiaName}}'+'<br><br>'+'{{product.addressName}}',
+	            position: {lat: {{product.latitudeNum}}, lng: {{product.longitudeNum}}}}
+	        	);
+	        infowindow.open(map);
+        	       
+       {% endif %}
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApMGZ2UbGB5OjHub7QCffJEjmI2jHIb0Y&callback=initMap"
+    async defer></script>
+  </body>
+</html>
